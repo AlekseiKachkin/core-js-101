@@ -540,8 +540,20 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const map = new Map();
+
+  const sortArr = array.reduce((acc, elem) => {
+    const key = keySelector(elem);
+    const value = valueSelector(elem);
+    if (acc.has(key)) {
+      acc.set(key, acc.get(key).concat([value]));
+    } else {
+      acc.set(key, [value]);
+    }
+    return acc;
+  }, map);
+  return sortArr;
 }
 
 /**
@@ -557,8 +569,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.map(childrenSelector).flat();
 }
 
 
@@ -574,10 +586,14 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  let res;
+  const travels = indexes.reduce((acc, elem) => {
+    res = acc[elem];
+    return res;
+  }, arr);
+  return travels;
 }
-
 
 /**
  * Swaps the head and tail of the specified array:
@@ -597,10 +613,17 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  let tailIndex = Math.floor(arr.length / 2);
+  let middle = [];
+  if (arr.length % 2 === 1) {
+    tailIndex = Math.floor(arr.length / 2) + 1;
+    middle = arr.at(Math.floor(arr.length / 2));
+  }
+  const head = arr.slice(0, Math.floor(arr.length / 2));
+  const tail = arr.slice(tailIndex, arr.length);
+  return tail.concat(middle).concat(head);
 }
-
 
 module.exports = {
   findElement,
