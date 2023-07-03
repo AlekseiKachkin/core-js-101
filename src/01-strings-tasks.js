@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* *******************************************************************************************
  *                                                                                           *
  * Please read the following tutorial before implementing tasks:                              *
@@ -213,8 +214,47 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  let res = '';
+  const cases = {
+    tangle1: '┌',
+    tangle2: '┐',
+    tangle3: '└',
+    tangle4: '┘',
+    horizontal: '─',
+    vertical: '│',
+  };
+  for (let y = 1; y <= height; y++) {
+    for (let x = 1; x <= width; x++) {
+      switch (true) {
+        case `${x}${y}` === '11':
+          res = `${res}${cases.tangle1}`;
+          break;
+        case `${x}${y}` === `${width}1`:
+          res = `${res}${cases.tangle2}`;
+          break;
+        case `${x}${y}` === `1${height}`:
+          res = `${res}${cases.tangle3}`;
+          break;
+        case `${x}${y}` === `${width}${height}`:
+          res = `${res}${cases.tangle4}`;
+          break;
+        case (x === 1 || x === width):
+          res = `${res}${cases.vertical}`;
+          break;
+        case (y === 1 || y === height):
+          res = `${res}${cases.horizontal}`;
+          break;
+        default:
+          res = `${res} `;
+          break;
+      }
+      if (x === width) {
+        res = `${res}\n`;
+      }
+    }
+  }
+  return res;
 }
 
 /**
@@ -233,8 +273,33 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const Up = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const Down = 'abcdefghijklmnopqrstuvwxyz';
+
+  let res = '';
+  let letter = '';
+  const code = str.split('');
+  code.forEach((item) => {
+    let big = true;
+    let pos = Up.indexOf(item);
+    if (pos === -1) {
+      big = !big;
+      pos = Down.indexOf(item);
+    }
+    if (pos !== -1) {
+      pos = (pos + 13) % 26;
+      if (big) {
+        letter = Up[pos];
+      } else {
+        letter = Down[pos];
+      }
+      res = `${res}${letter}`;
+    } else {
+      res = `${res}${item}`;
+    }
+  });
+  return res;
 }
 
 /**
