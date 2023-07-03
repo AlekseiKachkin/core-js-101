@@ -24,9 +24,7 @@
  *
  */
 function getComposition(f, g) {
-  return function (...arg) {
-    return f(g(...arg));
-  };
+  return (...arg) => f(g(...arg));
 }
 
 
@@ -86,7 +84,7 @@ function getPolynom() {
  */
 function memoize(fn) {
   const cache = {};
-  return function (n) {
+  return (n) => {
     const isObj = typeof n === 'object';
     // eslint-disable-next-line prefer-rest-params
     const args = (isObj) ? Array.prototype.slice.call(arguments) : n;
